@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Techno Verse • Comms Channels</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --metal-1:#595f62; /* dark steel */
+      --metal-2:#8b9497; /* brushed highlight */
+      --metal-3:#2b2f31; /* seams */
+      --acid:#17ff7a;    /* pip-boy green */
+      --amber:#f2c26b;   /* indicator */
+      --red:#ff4d4d;     /* alert */
+      --screen-glow: rgba(23,255,122,0.25);
+      --glass-blur:8px;
+      --glass-sat:1.4;
+    }
+
+    html,body{height:100%}
+    body{
+      margin:0; min-height:100%; background:#0a0d10; color:#cfd8dc;
+      font-family:'Share Tech Mono', monospace;
+      background-image:
+        radial-gradient(1200px 500px at 50% 0%, #0c1116 0%, #06080a 60%, #040607 100%),
+        radial-gradient(50% 100% at 50% 120%, #0f1a1f 0%, transparent 80%);
+      padding-top:0; /* top bar is sticky & full-width */
+    }
+
+    /* ---- Metal frame shell ------------------------------------------------ */
+    .frame{
+      position:relative; width:min(1200px,96vw); margin:0 auto 18px; padding:18px; border-radius:22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.1)),
+        radial-gradient(200% 120% at 50% -20%, rgba(255,255,255,0.06), transparent 55%),
+        repeating-linear-gradient(90deg, #777 0 1px, #6a6a6a 1px 2px),
+        linear-gradient(180deg, var(--metal-2), var(--metal-1) 30%, #4b5053 60%, #42484a 100%);
+      box-shadow:
+        inset 0 0 0 2px #202426,
+        inset 0 0 0 4px #101214,
+        0 30px 80px rgba(0,0,0,0.55),
+        0 6px 16px rgba(0,0,0,0.6);
+      outline:1px solid #0f1316;
+      filter:contrast(1.02) saturate(1.05);
+    }
+    .frame:before{content:""; position:absolute; inset:10px; padding:10px; border-radius:18px;
+      background:linear-gradient(145deg, rgba(0,0,0,0.4), rgba(255,255,255,0.05) 40%, rgba(0,0,0,0.45));
+      -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+      mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+      -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
+    .frame:after{content:""; position:absolute; inset:0; border-radius:22px; pointer-events:none;
+      background:
+        radial-gradient(circle at 26px 26px, #a7b0b4 0 4px, #51585b 4px 6px, transparent 6px),
+        radial-gradient(circle at calc(100% - 26px) 26px, #a7b0b4 0 4px, #51585b 4px 6px, transparent 6px),
+        radial-gradient(circle at 26px calc(100% - 26px), #a7b0b4 0 4px, #51585b 4px 6px, transparent 6px),
+        radial-gradient(circle at calc(100% - 26px) calc(100% - 26px), #a7b0b4 0 4px, #51585b 4px 6px, transparent 6px);
+      mix-blend-mode:overlay; }
+
+    /* ---- Docked top bar --------------------------------------------------- */
+    .frame.topbar{ position:sticky; top:0; z-index:1000; width:100vw; max-width:none; border-radius:0; padding-left:0; padding-right:0; margin:0 0 18px; }
+    .frame.topbar:before, .frame.topbar:after{ border-radius:0; }
+
+    nav.navbar{ width:100%; max-width:min(1200px,96vw); margin:0 auto; padding:14px; border-radius:16px; isolation:isolate;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.35)),
+        radial-gradient(130% 220% at -10% 0%, rgba(255,255,255,0.08), transparent 50%),
+        linear-gradient(180deg, #6b7376, #3e4649);
+      box-shadow: inset 0 0 0 1px #0e1214, inset 0 -2px 12px rgba(0,0,0,0.35), 0 12px 24px rgba(0,0,0,0.3);
+      display:grid; grid-template-columns: auto 1fr auto; grid-template-rows:auto auto; gap:12px; align-items:center; }
+
+    /* Row 1 */
+    .tools{ grid-column:3; grid-row:1; display:flex; gap:8px; align-items:center; justify-self:end; }
+    .brand{ display:flex; align-items:center; height:54px; padding:0 14px; border-radius:10px; text-decoration:none;
+      border:1px solid rgba(23,255,122,0.25); background: linear-gradient(180deg, rgba(23,255,122,0.06), rgba(0,0,0,0.25));
+      box-shadow: inset 0 0 0 1px rgba(23,255,122,0.25); }
+    .brand span{ font-family:'Orbitron',sans-serif; font-weight:700; letter-spacing:0.14em; background:linear-gradient(90deg,#66ffe0,#17ff7a,#b3ff00); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow:0 0 14px rgba(23,255,122,0.25); }
+    .tool{ height:54px; padding:10px 12px; border-radius:10px; border:0; cursor:pointer; background: linear-gradient(180deg, #23302e, #0d1211); color:var(--acid); font-family:'Share Tech Mono', monospace; }
+
+    .crt{ grid-column:2; grid-row:1; justify-self:center; position:relative; width:420px; height:76px; border-radius:10px; padding:10px 12px; overflow:hidden;
+      background: radial-gradient(120% 180% at 50% 40%, rgba(17,255,122,0.18), rgba(17,255,122,0.06) 60%, rgba(0,0,0,0.05) 100%), #07140d; color:var(--acid); font-size:14px; box-shadow: inset 0 0 0 1px rgba(23,255,122,0.35), inset 0 0 22px var(--screen-glow), 0 0 24px rgba(17,255,122,0.15); }
+    .crt:before{ content:""; position:absolute; inset:0; background:repeating-linear-gradient(to bottom, rgba(0,0,0,.2) 0 1px, rgba(0,0,0,0) 1px 3px); opacity:.45; }
+    .crt .row{ display:flex; justify-content:space-between; }
+    .led{ width:10px; height:10px; border-radius:50%; margin-left:8px; display:inline-block; background: radial-gradient(circle at 30% 30%, #fff, var(--amber) 30%, #aa7b2e 60%, #5a3e12 70%); box-shadow:0 0 8px var(--amber); }
+
+    /* Row 2 */
+    .btns{ grid-column:1 / -1; grid-row:2; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+    .nav-btn{ position:relative; display:flex; align-items:center; justify-content:center; gap:10px; padding:10px 14px; min-width:130px; height:54px; flex:0 0 auto; border:0; border-radius:12px; cursor:pointer; user-select:none; text-decoration: none;
+      font-family:'Orbitron',sans-serif; font-size:12px; color:#d7ffea; background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.4)), linear-gradient(180deg, #2b3432, #121716); box-shadow: inset 0 0 0 1px #0a0f0e, 0 4px 10px rgba(0,0,0,0.4); }
+    .nav-btn:before{ content:""; position:absolute; inset:1px; border-radius:11px; backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)); background: linear-gradient(180deg, rgba(22,44,38,0.55), rgba(8,16,14,0.4)); box-shadow: inset 0 0 0 1px rgba(23,255,122,0.22), inset 0 6px 22px rgba(23,255,122,0.06); pointer-events:none; }
+    .nav-btn:hover{ box-shadow: inset 0 0 0 1px #0a0f0e, 0 6px 14px rgba(0,0,0,0.55); transform: translateY(-1px); }
+    .nav-btn.active{ outline:1px solid rgba(23,255,122,0.45); }
+    .ico{ width:18px; height:18px; display:inline-grid; place-items:center; filter: drop-shadow(0 0 4px rgba(23,255,122,0.5)); }
+    .label{ position:relative; z-index:1; text-transform:uppercase; letter-spacing:.09em; font-weight:600; line-height:1; white-space:nowrap; text-shadow: 0 1px 0 rgba(0,0,0,.6), 0 0 10px rgba(23,255,122,.18); -webkit-text-stroke:.25px rgba(0,0,0,.35); }
+    .badge{ position:absolute; top:-6px; right:-6px; background:var(--red); color:#fff; font-size:10px; padding:2px 6px; border-radius:999px; box-shadow:0 0 12px rgba(255,77,77,.7); }
+
+    /* Page content cards */
+    .holo-card{ position:relative; border-radius:18px; padding:20px 20px 24px; color:#dff7ff; background: linear-gradient(180deg, rgba(15,45,60,0.45), rgba(10,35,48,0.25)); backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)); box-shadow: 0 0 0 1px rgba(72,200,255,0.6), inset 0 0 36px rgba(72,200,255,0.2), 0 40px 120px rgba(0,0,0,0.6); overflow:hidden; }
+    .holo-card:before{ content:""; position:absolute; inset:-60px; background: radial-gradient(80% 30% at 50% 0%, rgba(72,200,255,0.25), transparent 60%), repeating-linear-gradient(to right, rgba(72,200,255,0.08) 0 1px, rgba(0,0,0,0) 1px 24px), repeating-linear-gradient(to bottom, rgba(72,200,255,0.08) 0 1px, rgba(0,0,0,0) 1px 24px); mix-blend-mode:screen; pointer-events:none; animation: drift 16s linear infinite; }
+    @keyframes drift{ 0%{ transform: translateY(-10px);} 100%{ transform: translateY(10px);} }
+
+    .hero-title{ font-family:'Orbitron',sans-serif; text-transform:uppercase; letter-spacing:.14em; font-size:22px; }
+    
+    footer.footer .holo-card{ padding:14px 18px; }
+    .foot{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+    .foot a{ color:#aee8ff; text-decoration:none; }
+    .foot a:hover{ text-decoration:underline; }
+
+    /* Modals */
+    .holo-modal{ position:fixed; inset:0; display:none; place-items:center; padding:40px; z-index:1500; }
+    .holo-modal.open{ display:grid; }
+    .holo-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .holo-title{ font-family:'Orbitron',sans-serif; text-transform:uppercase; letter-spacing:.12em; }
+    .x{ background:transparent; border:1px solid rgba(72,200,255,0.6); color:#c9f2ff; border-radius:8px; padding:8px 10px; cursor:pointer; }
+    .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; }
+    .card{ border-radius:12px; padding:12px; background: linear-gradient(180deg, rgba(72,200,255,0.15), rgba(0,0,0,0.2)); box-shadow: inset 0 0 0 1px rgba(72,200,255,0.35); display:block; text-decoration:none; color:#dff7ff; }
+
+    .theme-tiles .tile{ display:flex; align-items:center; gap:10px; cursor:pointer; border:0; text-align:left; color:#dff7ff; font-family:'Share Tech Mono', monospace; }
+    .theme-tiles .tile .dot{ width:28px; height:28px; border-radius:50%; box-shadow:0 0 0 2px rgba(72,200,255,0.35), 0 0 12px rgba(72,200,255,0.25) inset; }
+    
+    /* ---- CHANNELS PAGE STYLES ---- */
+    .channel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 15px;
+    }
+    .channel-card {
+        background: rgba(0,0,0,0.2);
+        border: 1px solid rgba(23,255,122,0.15);
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .channel-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 15px var(--screen-glow);
+    }
+    .channel-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid rgba(23,255,122,0.1);
+        padding-bottom: 10px;
+    }
+    .channel-card-name {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.1em;
+        color: var(--acid);
+    }
+    .channel-card-users {
+        font-size: 0.9em;
+        color: #fff;
+        background: rgba(23,255,122,0.1);
+        padding: 2px 8px;
+        border-radius: 99px;
+    }
+    .channel-card-desc {
+        flex-grow: 1;
+        font-size: 0.9em;
+        opacity: 0.8;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+    .join-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        background: transparent;
+        border: 1px solid var(--acid);
+        color: var(--acid);
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Orbitron', sans-serif;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+    }
+    .join-btn:hover {
+        background: var(--acid);
+        color: #000;
+        text-shadow: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- TOPBAR -->
+  <div class="frame topbar" aria-label="Techno Verse Docked Navbar">
+    <nav class="navbar" role="navigation" aria-label="Primary">
+      <div class="crt" aria-live="polite">
+        <div class="row"><span>SYSTEM:</span><span>READY</span></div>
+        <div class="row"><span>MODE:</span><span>COMMS</span></div>
+        <div class="row"><span>LINK:</span><span>ENCRYPTED<span class="led" aria-hidden="true"></span></span></div>
+      </div>
+
+      <div class="btns">
+        <a class="nav-btn" href="../ops/index.html" data-icon="radar" data-label="Ops">
+          <span class="ico" aria-hidden="true"></span><span class="label"></span>
+        </a>
+        <a class="nav-btn" href="../map/index.html" data-icon="map" data-label="Map">
+          <span class="ico"></span><span class="label"></span>
+        </a>
+        <a class="nav-btn active" href="index.html" data-icon="comms" data-label="Comms" data-modal="#modal-comms">
+          <span class="ico"></span><span class="label"></span><span class="badge" aria-label="2 notifications">2</span>
+        </a>
+        <a class="nav-btn" href="../system/index.html" data-icon="gear" data-label="System" data-modal="#modal-sys">
+          <span class="ico"></span><span class="label"></span>
+        </a>
+      </div>
+
+      <div class="tools">
+        <a href="../../index.html" class="brand" id="brandLogo" title="Techno Verse"><span>TECHNO&nbsp;VERSE</span></a>
+        <button class="tool" id="themeBtn" title="Themes">THEME</button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- CHANNELS PAGE CONTENT -->
+  <main id="channelsWrap">
+    <div class="frame">
+      <div class="holo-card">
+          <div class="hero-title" style="margin-bottom: 20px;">Public Comms Channels</div>
+          <div class="channel-grid">
+            
+            <div class="channel-card">
+                <div class="channel-card-header">
+                    <div class="channel-card-name">#trade-hub</div>
+                    <div class="channel-card-users" data-base-users="1284">1,284 online</div>
+                </div>
+                <p class="channel-card-desc">Central hub for all merchant activity. Discuss pricing, post trade offers, and arrange cargo manifests.</p>
+                <a href="../channels/orgs/tradehub/index.html" class="join-btn">Join Channel</a>
+            </div>
+
+            <div class="channel-card">
+                <div class="channel-card-header">
+                    <div class="channel-card-name">#merc-guild</div>
+                    <div class="channel-card-users" data-base-users="452">452 online</div>
+                </div>
+                <p class="channel-card-desc">The official channel for the Mercenary's Guild. Find contracts, form squads, and discuss tactics.</p>
+                <a href="../channels/orgs/MercGuild/home.html" class="join-btn">Join Channel</a>
+            </div>
+
+            <div class="channel-card">
+                <div class="channel-card-header">
+                    <div class="channel-card-name">#explorer-net</div>
+                    <div class="channel-card-users" data-base-users="88">88 online</div>
+                </div>
+                <p class="channel-card-desc">Share and discuss findings from deep space. Post coordinates for new systems, anomalies, and resource-rich locations.</p>
+                <a href="#" class="join-btn">Join Channel</a>
+            </div>
+
+            <div class="channel-card">
+                <div class="channel-card-header">
+                    <div class="channel-card-name">#ship-mechanics</div>
+                    <div class="channel-card-users" data-base-users="219">219 online</div>
+                </div>
+                <p class="channel-card-desc">A technical channel for shipwrights and engineers. Discuss module tuning, custom modifications, and repair techniques.</p>
+                <a href="#" class="join-btn">Join Channel</a>
+            </div>
+
+            <div class="channel-card">
+                <div class="channel-card-header">
+                    <div class="channel-card-name">#sector7-local</div>
+                    <div class="channel-card-users" data-base-users="64">64 online</div>
+                </div>
+                <p class="channel-card-desc">Local comms for traffic and events within Sector 7. All pilots in the area are encouraged to monitor this channel.</p>
+                <a href="#" class="join-btn">Join Channel</a>
+            </div>
+            
+            <div class="channel-card">
+                <div class="channel-card-header">
+                    <div class="channel-card-name">#pirate-band</div>
+                    <div class="channel-card-users">??? online</div>
+                </div>
+                <p class="channel-card-desc">ENCRYPTED. Signal source is unstable. Access is restricted. Attempting to join may be hazardous.</p>
+                <a href="#" class="join-btn" style="border-color: var(--red); color: var(--red);">Attempt Connection</a>
+            </div>
+
+          </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="frame footer">
+    <div class="holo-card">
+      <div class="foot">
+        <div>© 2025 Techno Verse • v0.1.0</div>
+        <div class="links"><a href="#">Docs</a> • <a href="#">Privacy</a> • <a href="#">Terms</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- APP MODALS (paths updated) -->
+    <div class="holo-modal" id="modal-ops" role="dialog" aria-modal="true" aria-labelledby="opsTitle">
+      <div class="holo-card">
+        <div class="holo-head">
+          <h3 class="holo-title" id="opsTitle">Operations</h3>
+          <div style="display:flex; gap:8px;"><button class="x" data-close>Close</button></div>
+        </div>
+        <div class="grid">
+          <a class="card link" href="../ops/radar.html">Radar</a>
+          <a class="card link" href="../ops/resources.html">Tagged Resources</a>
+          <a class="card link" href="../ops/outposts.html">Enemy Outposts</a>
+          <a class="card link" href="../ops/bounties.html">Pirates / Bounty Hunters</a>
+        </div>
+      </div>
+    </div>
+    <div class="holo-modal" id="modal-map" role="dialog" aria-modal="true" aria-labelledby="mapTitle">
+      <div class="holo-card">
+        <div class="holo-head">
+          <h3 class="holo-title" id="mapTitle">Navigation Matrix</h3>
+          <div style="display:flex; gap:8px;"><button class="x" data-close>Close</button></div>
+        </div>
+        <div class="grid">
+          <a class="card link" href="../map/sectors.html">Sectors</a>
+          <a class="card link" href="../map/warp-gates.html">Warp Gates</a>
+          <a class="card link" href="../map/poi.html">Points of Interest</a>
+          <a class="card link" href="../map/routes.html">Routes</a>
+        </div>
+      </div>
+    </div>
+    <div class="holo-modal" id="modal-comms" role="dialog" aria-modal="true" aria-labelledby="commsTitle">
+      <div class="holo-card">
+        <div class="holo-head">
+          <h3 class="holo-title" id="commsTitle">Communications</h3>
+          <div style="display:flex; gap:8px;"><button class="x" data-close>Close</button></div>
+        </div>
+        <div class="grid">
+          <a class="card link" href="inbox.html">Inbox</a>
+          <a class="card link" href="channels.html">Channels</a>
+          <a class="card link" href="distress.html">Distress Signals</a>
+          <a class="card link" href="telemetry.html">Telemetry</a>
+        </div>
+      </div>
+    </div>
+    <div class="holo-modal" id="modal-sys" role="dialog" aria-modal="true" aria-labelledby="sysTitle">
+      <div class="holo-card">
+        <div class="holo-head">
+          <h3 class="holo-title" id="sysTitle">System Config</h3>
+          <div style="display:flex; gap:8px;"><button class="x" data-close>Close</button></div>
+        </div>
+        <div class="grid">
+          <a class="card link" href="../system/power.html">Power</a>
+          <a class="card link" href="../system/io.html">I / O</a>
+          <a class="card link" href="../system/security.html">Security</a>
+          <a class="card link" href="../system/settings.html">Settings</a>
+          <a class="card link" href="../system/about.html">About</a>
+        </div>
+      </div>
+    </div>
+
+
+  <!-- THEMES MODAL -->
+  <div class="holo-modal" id="modal-themes" role="dialog" aria-modal="true" aria-labelledby="themesTitle">
+    <div class="holo-card">
+      <div class="holo-head">
+        <h3 class="holo-title" id="themesTitle">Themes</h3>
+        <button class="x" data-close>Close</button>
+      </div>
+      <div class="grid theme-tiles">
+        <button class="card tile" data-theme="hop-dark"><span class="dot" style="background:#0a0d10"></span>Blackout</button>
+        <button class="card tile" data-theme="hop-light"><span class="dot" style="background:#e8f5ef"></span>Whitout</button>
+        <button class="card tile" data-theme="aurora"><span class="dot" style="background:linear-gradient(45deg,#00ffd5,#7a00ff)"></span>Aurora</button>
+        <button class="card tile" data-theme="crimson"><span class="dot" style="background:#9b1c1c"></span>RavenCorps Red</button>
+        <button class="card tile" data-theme="forest"><span class="dot" style="background:#0e3b2e"></span>Forest</button>
+        <button class="card tile" data-theme="retro"><span class="dot" style="background:linear-gradient(45deg,#ff7a00,#ffd100)"></span>Retro</button>
+        <button class="card tile" data-theme="ocean"><span class="dot" style="background:#005b96"></span>Ocean</button>
+        <button class="card tile" data-theme="nebula"><span class="dot" style="background:#7a3cff"></span>Nebula</button>
+        <button class="card tile" data-theme="matrix"><span class="dot" style="background:#001b00"></span>Matrix</button>
+        <button class="card tile" data-theme="lava"><span class="dot" style="background:linear-gradient(45deg,#ff3b00,#ffb800)"></span>Lava Flow</button>
+        <button class="card tile" data-theme="sunset"><span class="dot" style="background:linear-gradient(45deg,#ff4d6d,#ffb347)"></span>Sunset Glow</button>
+      </div>
+      <div style="margin-top:12px; display:flex; align-items:center; gap:10px;">
+        <label style="display:flex; align-items:center; gap:8px; font-family:'Share Tech Mono', monospace;">
+          <input type="checkbox" id="glassToggle" checked /> App Glass Mode
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Icons -----------------------------------------------------------
+    function svg(kind){
+      const acid = getComputedStyle(document.documentElement).getPropertyValue('--acid')||'#17ff7a';
+      const map={
+        radar:`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="${acid}" stroke-width="1.5"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 3v9l4 4"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>`,
+        map:`<svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='1.5'><path d='M9 6l6-3 6 3v12l-6 3-6-3-6 3V9z'/><path d='M9 6v12'/><path d='M15 3v12'/></svg>`,
+        comms:`<svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='1.5'><path d='M2 8a20 20 0 0 1 20 0'/><path d='M5 12a14 14 0 0 1 14 0'/><path d='M8 16a8 8 0 0 1 8 0'/><circle cx='12' cy='20' r='1.5' fill='currentColor'/></svg>`,
+        gear:`<svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='1.5'><path d='M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'/><path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1.82l.02.06a2 2 0 1 1-3.38 0l.02-.06A1.65 1.65 0 0 0 9 19.4 1.65 1.65 0 0 0 7.18 19l-.06.06A2 2 0 1 1 4.29 16.2l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1.82-.33l-.06.02a2 2 0 1 1 0-3.38l.06.02A1.65 1.65 0 0 0 4.6 9c.08-.39 0-.8-.2-1.15l-.06-.06A2 2 0 1 1 7.18 4.29l.06.06A1.65 1.65 0 0 0 9 4.6c.39-.08.8 0 1.15.2l.06.06A1.65 1.65 0 0 0 12 4.6c.39.08.8 0 1.15-.2l.06-.06A2 2 0 1 1 16.82 7.18l-.06.06c-.2.35-.28.76-.2 1.15a1.65 1.65 0 0 0 1.21 1.21c.39.08.8 0 1.15-.2l.06-.06A2 2 0 1 1 19.71 16.2l-.06-.06c-.35-.2-.76-.28-1.15-.2z'/></svg>`
+      };
+      return map[kind]||'';
+    }
+
+    document.querySelectorAll('.nav-btn').forEach(btn=>{
+      const icon = btn.dataset.icon; const label = btn.dataset.label || '';
+      const icoEl = btn.querySelector('.ico'); const labEl = btn.querySelector('.label');
+      if(icoEl) icoEl.innerHTML = svg(icon);
+      if(labEl) labEl.textContent = label;
+    });
+
+    // --- Modals ---------------------------------------------------------
+    const openModal = sel => { const m = document.querySelector(sel); if(m) m.classList.add('open'); };
+    const closeAllModals = () => document.querySelectorAll('.holo-modal.open').forEach(m=>m.classList.remove('open'));
+    document.addEventListener('click', e=>{ if(e.target.matches('[data-close]') || e.target.classList.contains('holo-modal')) closeAllModals(); });
+
+    document.querySelector('.btns').addEventListener('click', e=>{
+      const a = e.target.closest('.nav-btn[data-modal]'); if(!a) return;
+      if(e.metaKey || e.ctrlKey || e.shiftKey || e.button===1) return;
+      e.preventDefault();
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      a.classList.add('active');
+      openModal(a.dataset.modal);
+    });
+
+    document.getElementById('themeBtn').addEventListener('click', ()=> openModal('#modal-themes'));
+
+    // --- Themes ---------------------------------------------------------
+    const THEMES = {
+      'hop-dark': { vars:{'--acid':'#17ff7a','--metal-1':'#595f62','--metal-2':'#8b9497'}, bg:['#0a0d10','#040607'] },
+      'hop-light':{ vars:{'--acid':'#12c85c','--metal-1':'#d8dee2','--metal-2':'#f1f5f9'}, bg:['#edf7f1','#cfe7dc'] },
+      'aurora':   { vars:{'--acid':'#33ffd1'}, bg:['#0b1020','#0b1a2a'] },
+      'crimson': { vars:{'--acid':'#ff6b6b'}, bg:['#140606','#2a0b0b'] },
+      'forest':  { vars:{'--acid':'#3dff9e'}, bg:['#07130e','#0d1f18'] },
+      'retro':   { vars:{'--acid':'#ffd166'}, bg:['#120c08','#1b140b'] },
+      'ocean':   { vars:{'--acid':'#66e0ff'}, bg:['#071018','#0a1a26'] },
+      'nebula':  { vars:{'--acid':'#b691ff'}, bg:['#0f0b1a','#1a1130'] },
+      'matrix':  { vars:{'--acid':'#00ff88'}, bg:['#000800','#001300'] },
+      'lava':    { vars:{'--acid':'#ffb45a'}, bg:['#160705','#2a100b'] },
+      'sunset':  { vars:{'--acid':'#ff9f80'}, bg:['#120912','#2a0f1a'] }
+    };
+    
+    function applyTheme(key){
+      const t = THEMES[key]; if(!t) return;
+      Object.entries(t.vars||{}).forEach(([k,v])=> document.documentElement.style.setProperty(k,v));
+      document.body.style.backgroundImage = `radial-gradient(1200px 500px at 50% 0%, ${t.bg[0]} 0%, #06080a 60%, ${t.bg[1]} 100%), radial-gradient(50% 100% at 50% 120%, #0f1a1f 0%, transparent 80%)`;
+      localStorage.setItem('tkc_theme', key);
+    }
+
+    document.querySelectorAll('.tile').forEach(t=> t.addEventListener('click', ()=> applyTheme(t.dataset.theme)));
+
+    const glass = document.getElementById('glassToggle');
+    function setGlass(on){
+      document.documentElement.style.setProperty('--glass-blur', on ? '8px' : '0px');
+      document.documentElement.style.setProperty('--glass-sat', on ? '1.4' : '1.0');
+      localStorage.setItem('tkc_glass', on ? '1' : '0');
+    }
+    glass.addEventListener('change', ()=> setGlass(glass.checked));
+    
+    // --- Init Function ---
+    (function init(){
+      const saved = localStorage.getItem('tkc_theme') || 'hop-dark';
+      applyTheme(saved);
+      const g = localStorage.getItem('tkc_glass');
+      if(g!==null){ glass.checked = g==='1'; setGlass(glass.checked);} else { setGlass(true); }
+
+      // Simulate user count fluctuation
+      document.querySelectorAll('.channel-card-users[data-base-users]').forEach(el => {
+          const base = parseInt(el.dataset.baseUsers, 10);
+          const fluctuation = Math.floor((Math.random() - 0.5) * (base * 0.05)); // Fluctuate by up to 5%
+          const finalCount = base + fluctuation;
+          el.textContent = `${finalCount.toLocaleString()} online`;
+      });
+    })();
+
+    // Brand hard refresh to index
+    document.getElementById('brandLogo')?.addEventListener('click', (e)=>{
+      e.preventDefault();
+      location.href = '../../index.html';
+    });
+  </script>
+</body>
+</html>
